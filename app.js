@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const fs = require('fs');
 const multer = require('multer');
+require('dotenv').config;
+const { errors } = require('celebrate');
 
 const app = express();
 
@@ -15,11 +17,13 @@ app.use(cookieParser());
 app.set('view engine', 'jade');
 app.use('/uploads', express.static('uploads'));
 
-if (fs.existsSync('uploads')) {
+if (!fs.existsSync('uploads')) {
 	fs.mkdirSync('uploads');
 }
 
 app.use('/api', require('./routes'));
+
+app.use(errors());
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
