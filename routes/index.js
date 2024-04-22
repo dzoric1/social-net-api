@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const { UserController } = require('../controllers');
-const PostController = require('../controllers/post-controller');
+const { PostController } = require('../controllers');
+const { CommentController } = require('../controllers');
 const { validateRegister } = require('../utils/validators/userValidator');
 const { authenticateToken } = require('../middleware/auth');
 
@@ -27,5 +28,12 @@ router.post('/posts', authenticateToken, PostController.createPost);
 router.get('/posts', authenticateToken, PostController.getAllPosts);
 router.get('/posts/:id', authenticateToken, PostController.getPostById);
 router.delete('/posts/:id', authenticateToken, PostController.deletePost);
+
+router.post('/comments', authenticateToken, CommentController.createComment);
+router.delete(
+	'/comments/:id',
+	authenticateToken,
+	CommentController.deleteComment
+);
 
 module.exports = router;
