@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const { UserController } = require('../controllers');
 const { validateRegister } = require('../utils/validators/userValidator');
+const { authenticateToken } = require('../middleware/auth');
 
 const uploadDestination = 'uploads';
 
@@ -17,8 +18,8 @@ const uploads = multer({ storage: storage });
 
 router.post('/register', validateRegister, UserController.register);
 router.post('/login', UserController.login);
-router.get('/users/:id', UserController.getUserById);
-router.put('/users/:id', UserController.updateUser);
-router.get('/current', UserController.current);
+router.get('/users/:id', authenticateToken, UserController.getUserById);
+router.put('/users/:id', authenticateToken, UserController.updateUser);
+router.get('/current', authenticateToken, UserController.current);
 
 module.exports = router;
